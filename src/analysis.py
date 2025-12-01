@@ -37,9 +37,10 @@ def basic_stats(df):
     }
 
 
-def plot_data(df):
+def plot_data(df) -> str:
     """
     Genera una gráfica simple del precio de BTC en el tiempo.
+    Devuelve la ruta del archivo generado.
     """
     plt.figure(figsize=(10, 5))
     plt.plot(df["timestamp"], df["price_usd"], marker="o")
@@ -50,9 +51,18 @@ def plot_data(df):
     plt.tight_layout()
     plt.savefig(OUTPUT_PLOT)
     plt.close()
+    return OUTPUT_PLOT
 
 
 def main():
+    """
+    Ejecuta el análisis completo:
+    - Carga datos
+    - Calcula estadísticas
+    - Genera gráfica
+
+    Devuelve (stats, path_imagen)
+    """
     df = load_data()
 
     stats = basic_stats(df)
@@ -60,8 +70,10 @@ def main():
     for k, v in stats.items():
         print(f"  {k}: {v}")
 
-    plot_data(df)
-    print(f"Gráfica guardada en: {OUTPUT_PLOT}")
+    plot_path = plot_data(df)
+    print(f"Gráfica guardada en: {plot_path}")
+
+    return stats, plot_path
 
 
 if __name__ == "__main__":
